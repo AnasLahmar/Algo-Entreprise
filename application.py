@@ -119,8 +119,22 @@ if selected=="Recuit simulé":
             TempGel = col1.slider("TempGel : ", 0.0001, 10.0,step=0.0001, format="%.4f")
             alpha = col1.slider("alpha : ", 0.0, 10.0, 0.99)
             kEquil = col1.slider("kEquil : ", 0, 100, 20)
-            
-            if col2.checkbox('Afficher les Résultats',value=True):
+             #====================================================================
+            # define Button style
+            m = st.markdown("""
+                <style>
+                div.stButton > button:first-child {
+                    background-color: #0099ff;
+                    color:#ffffff;
+                }
+                div.stButton > button:hover {
+                    background-color: #00ff00;
+                    color:#ff0000;
+                    }
+                </style>""", unsafe_allow_html=True)
+        #=====================================================================
+            button=col2.button("Run")
+            if button:
                 cas=6
                 np.random.seed(cas)
                 Cycle = np.linspace(1, N, N, dtype=int).reshape(-1,1)
