@@ -239,6 +239,11 @@ if selected=="Essaims Particuliers":
         selected_function = function_dict[function_name]
         #function=st.selectbox("Select",["FT2","Easom","Rastrigin","Rosenbrock","Eggholder"])
         st.success("Parfait, vous avez choisi la fonction {}".format(function_name))
+        # Define the list of options for the radio button
+        options = ['Fonction', 'Déplacement des particules']
+
+        # Display the radio button
+        selected_option = st.sidebar.radio('Visualisez :', options)
         def Cout(in_):
             return selected_function(in_)
 
@@ -255,7 +260,7 @@ if selected=="Essaims Particuliers":
             ax.set_zlabel('z')
             st.set_option('deprecation.showPyplotGlobalUse', False)
             c2.pyplot(fig)
-        if st.checkbox("Visualisez la fonction"):
+        if selected_option=='Fonction':
             c1,c2=st.columns(2)
             c1.write(" ")
             c1.write(" ")
@@ -263,7 +268,7 @@ if selected=="Essaims Particuliers":
             DemiLongueur=c1.number_input("DemiLongueur",min_value=0,max_value=1000,value=10)
             num_points=c1.number_input("num_points",min_value=0,max_value=1000,value=100)
             vis3D(DemiLongueur, num_points)
-        if st.checkbox("Visualisez le déplacement des particules"):
+        if selected_option=='Déplacement des particules':
             def plotF(DemiLongueur, nb_points):
                 x = np.linspace(-DemiLongueur, DemiLongueur, nb_points)
                 y = np.linspace(-DemiLongueur, DemiLongueur, nb_points)
@@ -273,17 +278,20 @@ if selected=="Essaims Particuliers":
                 plt.colorbar()
             
             # Constants
-            N = st.slider("number of particles",min_value=0,max_value=200,value=10)  # number of particles
-            TF = st.slider("number of generations",min_value=0,max_value=200,value=5)  # number of generations
-            inertia=st.slider("Inertie",min_value=0.0,max_value=1.0,value=0.5)
-            DemiLongueur1=st.number_input("DemiLongueur",min_value=0,max_value=100,value=10)
+            c1,c2=st.columns(2)
+            N = c1.slider("Number of particles",min_value=0,max_value=200,value=10)  # number of particles
+            TF = c1.slider("Number of generations",min_value=0,max_value=200,value=5)  # number of generations
+            I=c1.slider("Inertie",min_value=0.0,max_value=1.0,value=0.5)
+            i=c2.slider("Individualist partition",min_value=0,max_value=20,value=2)
+            g=c2.slider("Social partition",min_value=0,max_value=20,value=2)
+            DemiLongueur1=c2.slider("DemiLongueur",min_value=0,max_value=1000,value=10)
             
             Vmax = DemiLongueur1 / 2  # maximum admissible speed
             # Initialize particle swarm parameters
-            #inertia = np.random.uniform(0.2, 1)  # randomly chosen between 0 and 1
-            a_best_i = 2  # individualist partition
-            a_best_g = 2  # social partition
-            fig=plt.figure(figsize=(10,6))
+            inertia = I #np.random.uniform(0.2, 1)  # randomly chosen between 0 and 1
+            a_best_i = i  # 2  # individualist partition
+            a_best_g = g  #2  # social partition
+            fig=plt.figure(figsize=(12,8))
             plotF(DemiLongueur1, 100)
             # Initialize positions and velocities and calculate cost
             # = DemiLongueur * (2 * np.random.rand(N, 2) - 1)
