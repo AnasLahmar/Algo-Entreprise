@@ -275,10 +275,12 @@ if selected=="Essaims Particuliers":
             # Constants
             N = st.slider("number of particles",min_value=0,max_value=200,value=10)  # number of particles
             TF = st.slider("number of generations",min_value=0,max_value=200,value=5)  # number of generations
+            inertia=st.slider("Inertie",min_value=0.0,max_value=1.0,value=0.5)
             DemiLongueur1=st.number_input("DemiLongueur",min_value=0,max_value=100,value=10)
+            
             Vmax = DemiLongueur1 / 2  # maximum admissible speed
             # Initialize particle swarm parameters
-            inertia = np.random.uniform(0.2, 1)  # randomly chosen between 0 and 1
+            #inertia = np.random.uniform(0.2, 1)  # randomly chosen between 0 and 1
             a_best_i = 2  # individualist partition
             a_best_g = 2  # social partition
             fig=plt.figure(figsize=(10,6))
