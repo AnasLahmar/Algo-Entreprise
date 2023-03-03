@@ -40,7 +40,7 @@ st.write(""" ## Algorithmes pour la décision en entreprise""")
 
 selected=option_menu(
     menu_title="Main Menu",
-    options=["Home","Essaims Particuliers","Recuit simulé"],
+    options=["Home","Recuit simulé","Essaims Particuliers"],
     icons=["house","bar-chart"],
     menu_icon="cast",  # optional
     default_index=0,
@@ -92,6 +92,7 @@ if selected=="Recuit simulé":
 
     # Choice of city typology *****************************************************
     # Arranged on a circle if Cercle = True, otherwise random on a square Cercle = False
+    
     Cercle="Cercle"
     Caree="Carré"
     if Cercle==forme:
@@ -254,7 +255,7 @@ if selected=="Essaims Particuliers":
             y = np.linspace(-DemiLongueur, DemiLongueur, num_points)
             X, Y = np.meshgrid(x, y)
             Z = Cout([X, Y])
-            ax.contour3D(X, Y, Z, 100, cmap='jet')
+            ax.plot_surface(X, Y, Z, cmap='jet')
             ax.set_xlabel('x')
             ax.set_ylabel('y')
             ax.set_zlabel('z')
@@ -269,6 +270,8 @@ if selected=="Essaims Particuliers":
             num_points=c1.number_input("num_points",min_value=0,max_value=1000,value=100)
             vis3D(DemiLongueur, num_points)
         if selected_option=='Déplacement des particules':
+            random.seed(42)
+
             def plotF(DemiLongueur, nb_points):
                 x = np.linspace(-DemiLongueur, DemiLongueur, nb_points)
                 y = np.linspace(-DemiLongueur, DemiLongueur, nb_points)
@@ -279,7 +282,7 @@ if selected=="Essaims Particuliers":
             
             # Constants
             c1,c2=st.columns(2)
-            N = c1.slider("Number of particles",min_value=0,max_value=200,value=10)  # number of particles
+            N = c1.slider("Number of particles",min_value=0,max_value=500,value=10)  # number of particles
             TF = c1.slider("Number of generations",min_value=0,max_value=200,value=5)  # number of generations
             I=c1.slider("Inertie",min_value=0.0,max_value=1.0,value=0.5)
             i=c2.slider("Individualist partition",min_value=0,max_value=20,value=2)
@@ -338,17 +341,20 @@ if selected=="Essaims Particuliers":
                 plt.plot(XG[0], XG[1], '.r')
                 df = df.append({'X': XG[0,0],'Y':XG[0,1],'FG':FG}, ignore_index=True)
                
-            c01.write(df)
+            c01.write(df.head(df.shape[0]))
             st.set_option('deprecation.showPyplotGlobalUse', False)
             c02.pyplot(fig)
             st.write(""" #### Variation de la fonction coût""")
+            b1,b2=st.columns(2)
             fig=plt.figure(figsize=(10,6))
             plt.plot(df['FG'])
             plt.title("Evolution de la fonction coût en fonction des générations")
             plt.ylabel('FG')
             plt.xlabel('Nombre de génération')
             st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot(fig)
+            b1.pyplot(fig)
+            b2.info('La solution obtenu pour ces paramètres choisis !')
+            b2.write(df.tail(1))
 
 
           
